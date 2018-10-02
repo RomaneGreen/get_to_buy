@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,16 +6,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Riverr app</title>
+    <link rel="shortcut icon" href="{% static '/img/favicond.ico' %}"/>
+    <link rel="icon" href="{% static '/img/favicond.ico' %}" type="image/x-icon" />
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/app.css' %}"  />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="">
-        Header
-    </div>
-<hr>
+    <nav class = "navbar navbar-default navbar-fixed-top">
+        <div class="navbar-inverse">
+            <div class="container">
+                <div class="navbar-header">
+                    <div class="navbar-brand"><img src="{% static 'img/fiverr.svg' %}" alt="" height="29"></div>
+                </div>
+                <form class="navbar-form navbar-left" action="" role="search" method="post">
+                    <div class="form-group">
+                        <input type="text" class = "form-control" placeholder="Find services" name="" id="">
+                    </div>
+                </form>
+                <ul class = "nav navbar-nav navbar-right">
+                    {% if user and not user.is_anonymous %}
+                    <li class="dropdown">
+                        <a href="#" class = "dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+                        {{ user.get_full_name|default:user.username }} <span class="caret"></span>
+                    </a>
+                    <ul class = "dropdown-menu">
+                        <li><a href="{% url 'social:disconnect' 'facebook' %}?next={{request.path}}">Logout with facebook</a></li>
+                        <li><a href="{% url 'social:disconnect' 'twitter' %}?next={{request.path}}">Logout with Twitter</a </li>
+                    </ul>
+                    </li>
+                            Hello {{ user.get_full_name | default:user.username }}
+                            {% else %}
+                                <li><a href="{% url 'social:begin' 'twitter' %}?next={{request.path}}">Login with Twitter</a></li>
+                                <li>    <a href="{% url 'social:begin' 'facebook' %}?next={{request.path}}">Login with facebook</a></li>
+                            {% endif %}
+                    </ul>
+            </div>
+        </div>
+        <div id="category">
+            <div class="container">
+            <ul class = "nav navbar-nav">
+                <li> <a href="#">Graphics and Design</a></li>
+                <li><a href="#">Digital Marketing</a></li>
+                <li><a href="#">Video & animation</a></li>
+                <li><a href="#">Music and audio</a></li>
+                <li><a href="#">programming & tech </a></li>
+            </ul>
+            </div>
+        </div>
+    </nav>
+
+
+<br>
+<div id="body">
+<div class="container">
 {% block page %}
 {% endblock %}
-<div class="">
-    Footer
 </div>
+</div>
+<footer id = "footer">
+    <div class="container">
+        <span>Riverr App &copy; 2018</span>
+    </div>
+</footer>
 </body>
 </html>

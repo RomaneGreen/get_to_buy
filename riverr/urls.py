@@ -14,11 +14,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.conf.urls import url, include
+from django.contrib.auth import views as auth_views
 from riverrapp import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', views.home, name='home'),
-    path('gigs/<int:id>/', views.gig_detail,name='gig_detail')
+    url(r'^$', views.home, name='home'),
+    url(r'^gigs/(?P<id>[0-9]+)$', views.gig_detail, name='gig_detail'),
+    url(r'^login/$', views.login, {'template_name': 'templates/login.html'}, name='login'),
+    url(r'^logout/$', views.logout,{'template_name': 'templates/logout.html'}, name='logout'),
+    url(r'^oauth/', include('social_django.urls', namespace='social')),
+    url(r'^admin/', admin.site.urls),
 ]

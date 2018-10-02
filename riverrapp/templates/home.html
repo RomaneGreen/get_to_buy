@@ -3,8 +3,11 @@
 
 {% block page %}
 
-<p>Home page</p>
 
-<a href='/gigs/1'>Gig detail</a>
+<p>Home pages</p>
+
+<p>This is home</p>
+<!-- <a href='/gigs/1'>Gig detail</a> -->
+<a href={% url 'gig_detail' '1' %}>Gig detail</a>
 
 {% endblock %}
