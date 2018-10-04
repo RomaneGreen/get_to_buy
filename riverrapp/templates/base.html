@@ -11,6 +11,7 @@
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css"> -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/app.css' %}"  />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -28,18 +29,26 @@
                 <ul class = "nav navbar-nav navbar-right">
                     {% if user and not user.is_anonymous %}
                     <li class="dropdown">
-                        <a href="#" class = "dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+
+                        <a href="#" class = "dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"</a>
+                        <img src="{% static 'img/avatar.jpg' %}" class="img-circle" height="22" width="22">
                         {{ user.get_full_name|default:user.username }} <span class="caret"></span>
+
                     </a>
                     <ul class = "dropdown-menu">
                         <li><a href="{% url 'social:disconnect' 'facebook' %}?next={{request.path}}">Logout with facebook</a></li>
-                        <li><a href="{% url 'social:disconnect' 'twitter' %}?next={{request.path}}">Logout with Twitter</a </li>
+                        <li><form method="post" action="{% url 'social:disconnect' 'facebook' %}">
+                             {% csrf_token %}
+                          <button type="submit">Disconnect from Facebook</button>
+                        </form>
+                    </li>
+                        <li><a href="{% url 'social:disconnect' 'google-oauth2' %}?next={{request.path}}">Logout with Google</a </li>
                     </ul>
                     </li>
                             Hello {{ user.get_full_name | default:user.username }}
                             {% else %}
-                                <li><a href="{% url 'social:begin' 'twitter' %}?next={{request.path}}">Login with Twitter</a></li>
-                                <li>    <a href="{% url 'social:begin' 'facebook' %}?next={{request.path}}">Login with facebook</a></li>
+                                <li><a href="{% url 'social:begin' 'google-oauth2' %}?next={{request.path}}">Login with Google</a></li>
+                                <li>    <a href="{% url 'social:begin' 'facebook' %}?next={{request.path}}">Login with Facebook</a></li>
                             {% endif %}
                     </ul>
             </div>
@@ -56,6 +65,7 @@
             </div>
         </div>
     </nav>
+
 
 
 <br>

@@ -41,6 +41,14 @@ INSTALLED_APPS = [
     'social_django',
 ]
 
+SOCIAL_AUTH_DISCONNECT_PIPELINE = (
+    'social.pipeline.disconnect.allowed_to_disconnect',
+    'social.pipeline.disconnect.get_entries',
+    'social.pipeline.disconnect.revoke_tokens',
+    'social.pipeline.disconnect.disconnect',
+)
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -144,5 +152,8 @@ SOCIAL_AUTH_FACEBOOK_SECRET = '3847b88a3c92f0e62b2ccec724406901'
 SOCIAL_AUTH_TWITTER_KEY = 'wlzGw25K4Uaa9CJuiq96RQFRf '
 SOCIAL_AUTH_TWITTER_SECRET = 'WVabJ3KZcOqmXW3hw88sisJy6Yk6e1uMOLteoFBI9xxrDT4Pxj'
 
-LOGIN_URL = 'login'
-LOGOUT_URL = 'logout'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY ='188853079086-5skedrl1farulticme2tvm3tddv5ub1e.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'YUZqiyPXsOIbGPUlkyeBqajQ'
+
+LOGIN_URL = '/'
+LOGOUT_URL = '/'
