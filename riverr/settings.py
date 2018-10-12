@@ -48,6 +48,17 @@ SOCIAL_AUTH_DISCONNECT_PIPELINE = (
     'social.pipeline.disconnect.disconnect',
 )
 
+# SOCIAL_AUTH_PIPELINE = (
+#     'social_core.pipeline.social_auth.social_details',
+#     'social_core.pipeline.social_auth.social_uid',
+#     'social_core.pipeline.social_auth.auth_allowed',
+#     'riverrapp.pipeline.load_user',
+#     'social_core.pipeline.social_auth.social_user',
+#     'social_core.pipeline.social_auth.associate_user',
+#     'social_core.pipeline.social_auth.load_extra_data',
+#     'social_core.pipeline.user.user_details',
+# )
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -157,3 +168,7 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'YUZqiyPXsOIbGPUlkyeBqajQ'
 
 LOGIN_URL = '/'
 LOGOUT_URL = '/'
+
+#upload directory for gig model
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+MEDIA_URL = '/media/'
