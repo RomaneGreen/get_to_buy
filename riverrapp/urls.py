@@ -2,6 +2,7 @@ from django.urls import path, include
 from riverrapp import views
 from django.contrib.auth import views as auth_views
 from django.conf.urls import url, include
+from .models import Gig
 
 urlpatterns = [
     path('admin/', admin.site.urls),

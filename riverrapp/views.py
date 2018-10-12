@@ -25,14 +25,22 @@ def gig_detail(request, id):
 
 @login_required(login_url="/")
 def create_gig(request):
+    error = ''
     if request.method == 'POST':
         gig_form = GigForm(request.POST,request.FILES)
+        if gig_form.is_valid():
+           gig = gig_form.save(commit=False)
+           gig.user = request.user
+           gig.save()
+           return redirect('my_gigs')
+        else:
+            error = 'Data is not valid'
         print(gig_form.is_valid())
         print(gig_form.errors())
     gig_form = GigForm()
-    return render(request,'create_gig.html',{"gig_form": gig_form})
+    return render(request,'create_gig.html',{"gig_form": gig_form,"error":error})
 
 @login_required(login_url="/")
 def my_gigs(request):
     gigs = Gig.objects.filter(user = request.user)
-    return render(request,'my_gigs.html',{})
+    return render(request,'my_gigs.html',{"gigs":gigs})
