@@ -3,6 +3,10 @@
 
 {% block page %}
 
-    Create a gig
+<form class="" action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ gig_form }}
+    <button type="submit" name="button">Publish</button>
+</form>
 
 {% endblock %}
