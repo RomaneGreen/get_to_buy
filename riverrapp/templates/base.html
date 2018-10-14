@@ -39,6 +39,8 @@
                         <li><a href="{% url 'create_gig' %}">Create a gig</a></li>
                         <li><a href="{% url 'my_gigs' %}">My Gigs</a></li>
                         <li role = 'separator' class = 'divider'></li>
+                        <li><a href="{% url 'profile' user.username %}">My Profile</a></li>
+                        <li role = 'separator' class = 'divider'></li>
                         <li><a href="{% url 'social:disconnect' 'facebook' %}?next={{request.path}}">Logout with facebook</a></li>
                         <li><form method="post" action="{% url 'social:disconnect' 'facebook' %}">
                              {% csrf_token %}
