@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Gig, Profile
 from .forms import GigForm
+import braintree
+
+braintree.Configuration.configure(braintree.Environment.Sandbox,merchant_id="",public_key="",private_key="")
 
 # Create your views here.
 @login_required
