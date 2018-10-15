@@ -16,7 +16,7 @@
             <a href="{% url 'gig_detail' gig.id %}"><img src="/media/{{ gig.photo }}"></a>
             <div class="caption">
                 <p> <a href="{% url 'gig_detail' gig.id %}">{{gig.title}}</a></p>
-                <p> <a href="{% url 'profile' user.username %}">{{gig.user.username}}</a> <span><b class="green pull-right">${{gig.price}}</b></span></p>
+                <p> <a href="{% url 'profile' gig.user.username %}">{{gig.user.username}}</a> <span><b class="green pull-right">${{gig.price}}</b></span></p>
             </div>
         </div>
     </div>
