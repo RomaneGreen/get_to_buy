@@ -33,6 +33,8 @@ urlpatterns = [
     url(r'^login/$', views.login, {'template_name': 'templates/login.html'}, name='login'),
     url(r'^logout/$', views.logout,{'template_name': 'templates/logout.html'}, name='logout'),
     url(r'^checkout/$', views.create_purchase, name='create_purchase'),
+    url(r'^my_sellings/$', views.my_sellings, name='my_sellings'),
+    url(r'^my_buyings/$', views.my_buyings, name='my_buyings'),
     url(r'^oauth/', include('social_django.urls', namespace='social')),
     url(r'^admin/', admin.site.urls),
 ] +static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
