@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Gig, Profile, Purchase
+from .models import Gig, Profile, Purchase, Review
 from .forms import GigForm
 import braintree
 
@@ -23,8 +23,10 @@ def gig_detail(request, id):
         gig = Gig.objects.get(id = id)
     except Gig.DoesNotExist:
         return redirect('/')
+
+    review = Review.objects.filter(gig=gig)
     client_token = braintree.ClientToken.generate()
-    return render(request,'gig_detail.html',{"gig":gig,"client_token":client_token})
+    return render(request,'gig_detail.html',{"review":review,"gig":gig,"client_token":client_token})
 
 @login_required(login_url="/")
 def create_gig(request):
