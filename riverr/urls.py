@@ -32,6 +32,7 @@ urlpatterns = [
     url(r'^edit_gig/(?P<id>[0-9]+)$', views.edit_gig, name='edit_gig'),
     url(r'^login/$', views.login, {'template_name': 'templates/login.html'}, name='login'),
     url(r'^logout/$', views.logout,{'template_name': 'templates/logout.html'}, name='logout'),
+    url(r'^checkout/$', views.create_purchase, name='create_purchase'),
     url(r'^oauth/', include('social_django.urls', namespace='social')),
     url(r'^admin/', admin.site.urls),
 ] +static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

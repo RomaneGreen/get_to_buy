@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Gig, Profile
+from .models import Gig, Profile, Purchase
 from .forms import GigForm
 import braintree
 
-braintree.Configuration.configure(braintree.Environment.Sandbox,merchant_id="",public_key="",private_key="")
+braintree.Configuration.configure(braintree.Environment.Sandbox,merchant_id="8wxwtqfdxqrcy6v9",public_key="st9rt59t4hfjk2dz",private_key="b8eb2e84d4e9892aa2533d7d1878bb1")
 
 # Create your views here.
 @login_required
@@ -23,8 +23,8 @@ def gig_detail(request, id):
         gig = Gig.objects.get(id = id)
     except Gig.DoesNotExist:
         return redirect('/')
-
-    return render(request,'gig_detail.html',{"gig":gig})
+    client_token = braintree.ClientToken.generate()
+    return render(request,'gig_detail.html',{"gig":gig,"client_token":client_token})
 
 @login_required(login_url="/")
 def create_gig(request):
@@ -80,3 +80,25 @@ def profile(request,username):
            return redirect("/")
     gigs = Gig.objects.filter(user = profile.user,status=True)
     return render(request,'profile.html',{"profile":profile,"gigs":gigs})
+
+@login_required(login_url="/")
+def create_purchase(request):
+    if request.method == 'POST':
+        try:
+            gig = Gig.objects.get(id = request.POST['gig_id'])
+        except Gig.DoesNotExist:
+            return redirect("/")
+
+        nonce = request.POST["payment_method_nonce"]
+        result = braintree.Transaction.sale({
+            "amount": gig.price,
+            "payment_method_nonce": nonce
+
+        })
+
+        if result.is_success:
+            # Purchase.objects.create(gig=gig, buyer=request.user)
+            print("Buy gig success!")
+        else:
+            print("Buy gig failed!")
+    return redirect('/')

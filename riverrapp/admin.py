@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Profile,Gig
+from .models import Profile, Gig, Purchase
 
-
+# Register your models here.
+admin.site.register(Purchase)
 admin.site.register(Profile)
 admin.site.register(Gig)
-# Register your models here.

@@ -13,14 +13,14 @@ class Profile(models.Model):
     about = models.CharField(max_length=1000)
     slogan = models.CharField(max_length=500)
 
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
-
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()
+# @receiver(post_save, sender=User)
+# def create_user_profile(sender, instance, created, **kwargs):
+#     if created:
+#         Profile.objects.create(user=instance)
+#
+# @receiver(post_save, sender=User)
+# def save_user_profile(sender, instance, **kwargs):
+#     instance.profile.save()
 
     def __str__(self):
         return self.user.username
@@ -46,3 +46,11 @@ class Gig(models.Model):
 
     def __str__(self):
       return self.title
+
+class Purchase(models.Model):
+    gig = models.ForeignKey(Gig,on_delete=models.CASCADE)
+    buyer = models.ForeignKey(User,on_delete=models.CASCADE)
+    time = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.gig.title
