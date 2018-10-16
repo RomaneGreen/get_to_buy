@@ -127,3 +127,17 @@ def my_sellings(request):
 def my_buyings(request):
     purchases = Purchase.objects.filter(buyer=request.user)
     return render(request,'my_buyings.html',{"purchases":purchases})
+
+def category(request,link):
+    categories = {
+       "graphics-design":"GD",
+       "digital-Marketing":"DM",
+       "video-Animation":"VA",
+       "music-audio":"MA",
+       "programming-tech":"PT"
+    }
+    try:
+        gigs = Gig.objects.filter(category=categories[link])
+        return render(request, 'home.html',{"gigs":gigs})
+    except KeyError:
+        return redirect('home')
