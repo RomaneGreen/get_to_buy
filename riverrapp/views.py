@@ -19,14 +19,27 @@ def home(request):
     return render(request,'home.html',{"gigs":gigs})
 
 def gig_detail(request, id):
+    if request.method == 'POST' and \
+        not request.user.is_anonymous() and \
+        Purchase.objects.filter(gig_id=id, buyer=request.user).count() > 0 and \
+        'content' in request.POST and \
+        request.POST['content'].strip() != '':
+        Review.objects.create(content=request.POST['content'],gig_id=id,user=request.user)
     try:
         gig = Gig.objects.get(id = id)
     except Gig.DoesNotExist:
         return redirect('/')
 
-    review = Review.objects.filter(gig=gig)
+    # if request.user.is_anonymous() or \:
+    #     Purchase.objects.filter(gig_id=id, buyer=request.user).count() == 0 or \
+    #     Review.objects.filter(gig=gig, user=request.user).count() > 0:
+    #     show_post_review = False
+    # else:
+    #     show_post_review = Purchase.objects.filter(gig=gig, buyer=request.user).count() > 0
+
+    reviews = Review.objects.filter(gig=gig)
     client_token = braintree.ClientToken.generate()
-    return render(request,'gig_detail.html',{"review":review,"gig":gig,"client_token":client_token})
+    return render(request,'gig_detail.html',{"show_post_review":show_post_review,"review":review,"gig":gig,"client_token":client_token})
 
 @login_required(login_url="/")
 def create_gig(request):
