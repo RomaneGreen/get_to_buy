@@ -36,6 +36,7 @@ urlpatterns = [
     url(r'^checkout/$', views.create_purchase, name='create_purchase'),
     url(r'^my_sellings/$', views.my_sellings, name='my_sellings'),
     url(r'^my_buyings/$', views.my_buyings, name='my_buyings'),
+    url(r'^search/$', views.search, name='search'),
     url(r'^oauth/', include('social_django.urls', namespace='social')),
     url(r'^admin/', admin.site.urls),
 ] +static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
