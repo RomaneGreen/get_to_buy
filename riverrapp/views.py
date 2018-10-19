@@ -1,18 +1,27 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 from .models import Gig, Profile, Purchase, Review
 from .forms import GigForm
+from django.conf import settings
+import stripe
 import braintree
 
-braintree.Configuration.configure(braintree.Environment.Sandbox,merchant_id="8wxwtqfdxqrcy6v9",public_key="st9rt59t4hfjk2dz",private_key="b8eb2e84d4e9892aa2533d7d1878bb1")
+stripe.api_key = settings.STRIPE_SECRET_KEY
+STRIPE_SECRET_KEY = 'sk_test_QBBK3fUNA4GvwSTirChrLGLW'
+STRIPE_PUBLISHABLE_KEY = 'pk_test_BKVBReTM3kPV3vTxhJXTXpku'
+
 
 # Create your views here.
 @login_required
 def login(request):
     return render(request,'home.html',{})
 
-def logout(request):
-    return render(request,'home.html',{})
+def logout_view(request):
+    logout(request)
+
+# def logout(request):
+#     return render(request,'home.html',{})
 
 def home(request):
     gigs = Gig.objects.filter(status=True)
@@ -30,16 +39,18 @@ def gig_detail(request, id):
     except Gig.DoesNotExist:
         return redirect('/')
 
-    # if request.user.is_anonymous() or \:
+    # if request.user.is_anonymous() or \
     #     Purchase.objects.filter(gig_id=id, buyer=request.user).count() == 0 or \
     #     Review.objects.filter(gig=gig, user=request.user).count() > 0:
     #     show_post_review = False
     # else:
-    #     show_post_review = Purchase.objects.filter(gig=gig, buyer=request.user).count() > 0
+    #      show_post_review = Purchase.objects.filter(gig=gig, buyer=request.user).count() > 0
 
     reviews = Review.objects.filter(gig=gig)
-    client_token = braintree.ClientToken.generate()
-    return render(request,'gig_detail.html',{"show_post_review":show_post_review,"review":review,"gig":gig,"client_token":client_token})
+    context = { "stripe_key": settings.STRIPE_PUBLIC_KEY}
+    # client_token = braintree.ClientToken.generate()
+    # return render(request,'gig_detail.html',{"review":review,"gig":gig,"client_token":client_token})
+    return render(request,'gig_detail.html',{"gig":gig},context)
 
 @login_required(login_url="/")
 def create_gig(request):
@@ -96,27 +107,51 @@ def profile(request,username):
     gigs = Gig.objects.filter(user = profile.user,status=True)
     return render(request,'profile.html',{"profile":profile,"gigs":gigs})
 
-@login_required(login_url="/")
-def create_purchase(request):
-    if request.method == 'POST':
-        try:
-            gig = Gig.objects.get(id = request.POST['gig_id'])
-        except Gig.DoesNotExist:
-            return redirect("/")
+# @login_required(login_url="/")
+# def create_purchase(request):
+    # if request.method == 'POST':
+    #     try:
+    #         gig = Gig.objects.get(id = request.POST['gig_id'])
+    #     except Gig.DoesNotExist:
+    #         return redirect("/")
+    #
+    #     nonce = request.POST["payment_method_nonce"]
+    #     result = braintree.Transaction.sale({
+    #         "amount": gig.price,
+    #         "payment_method_nonce": nonce
+    #
+    #     })
+    #
+    #     if result.is_success:
+    #         # Purchase.objects.create(gig=gig, buyer=request.user)
+    #         print("Buy gig success!")
+    #     else:
+    #         print("Buy gig failed!")
+    # return redirect('/')
+def thank_you(request):
+    context = {}
+    return render(request, "thank_you.html", context)
 
-        nonce = request.POST["payment_method_nonce"]
-        result = braintree.Transaction.sale({
-            "amount": gig.price,
-            "payment_method_nonce": nonce
+def checkout(request):
 
-        })
+    if request.method == "POST":
+        token = request.POST.get("stripeToken")
+        # amounts = request.POST.get("data-amount")
+    try:
+        charge  = stripe.Charge.create(
+            amount      = request.POST['amount'],
+            currency    = "usd",
+            source      = token,
+            description = "the website charged the user"
+        )
 
-        if result.is_success:
-            # Purchase.objects.create(gig=gig, buyer=request.user)
-            print("Buy gig success!")
-        else:
-            print("Buy gig failed!")
-    return redirect('/')
+
+    except stripe.error.CardError as ce:
+        return False, ce
+
+    else:
+
+        return redirect('thank_you.html',{gig:"gig"})
 
 @login_required(login_url="/")
 def my_sellings(request):
@@ -145,3 +180,9 @@ def category(request,link):
 def search(request):
     gigs = Gig.objects.filter(title__contains=request.GET['title'])
     return render(request,'home.html',{"gigs":gigs})
+
+
+def payment_form(request):
+
+    context = { "stripe_key": settings.STRIPE_PUBLIC_KEY }
+    return render(request, "gig_detail.html", context)

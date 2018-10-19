@@ -49,6 +49,8 @@
                         <li role = 'separator' class = 'divider'></li>
                         <li><a href="{% url 'profile' user.username %}">My profile</li>
                         <li role = 'separator' class = 'divider'></li>
+                        <li><a href="{% url 'logout' %}">Log out</li>
+                        <li role = 'separator' class = 'divider'></li>
                         <li><a href="{% url 'social:disconnect' 'facebook' %}?next={{request.path}}">Logout with facebook</a></li>
                         <li><form method="post" action="{% url 'social:disconnect' 'facebook' %}">
                              {% csrf_token %}

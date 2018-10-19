@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load mathfilters %}
 
 {% block page %}
 
@@ -60,12 +61,13 @@
        <div class="panel-body">
 
          {% if user and not user.is_anonymous %}
-           <form method="POST" action="/checkout/">
-             {% csrf_token %}
+           <!-- <form method="POST" action="/checkout/">
+             {% csrf_token %} -->
              <div id="payment-form"></div>
+             <a href="https://www.paypal.com/invoice/p/#SV2JZNTZAYM3MRZJ">
              <input name="gig_id" value="{{ gig.id }}" hidden>
-             <button type="submit" class="btn btn-success btn-block">Order Now (${{ gig.price }})</button>
-           </form>
+            <button type="submit" class="btn btn-success btn-block">Order Now (${{ gig.price }})</button></a>
+           <!-- </form> -->
 
            <script src="https://js.braintreegateway.com/v2/braintree.js"></script>
            <script>
@@ -97,5 +99,17 @@
      </div>
    </div>
  </div>
+<form action="/checkout" method="POST"> {% csrf_token %}
+    <input class="form-control" name="amount" value="{{ gig.price }}">
+ <h2>Buy for ${{ gig.price }}</h2>
+
+ <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+     data-key="pk_test_BKVBReTM3kPV3vTxhJXTXpku"
+     data-description="A Django Charge"
+     data-amount="{{ gig.price | mul:100 }} "
+     data-locale="auto">
+
+ </script>
+ </form>
 
 {% endblock %}

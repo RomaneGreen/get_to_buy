@@ -39,7 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'riverrapp',
     'social_django',
+    'mathfilters',
+
 ]
+
 
 SOCIAL_AUTH_DISCONNECT_PIPELINE = (
     'social.pipeline.disconnect.allowed_to_disconnect',
@@ -155,6 +158,7 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+
 LOGIN_REDIRECT_URL = '/'
 
 SOCIAL_AUTH_FACEBOOK_KEY = '264927554159815'
@@ -172,3 +176,11 @@ LOGOUT_URL = '/'
 #upload directory for gig model
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'
+
+
+
+STRIPE_SECRET_KEY = 'sk_test_QBBK3fUNA4GvwSTirChrLGLW'
+STRIPE_PUBLISHABLE_KEY = 'pk_test_BKVBReTM3kPV3vTxhJXTXpku'
+
+STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_SECRET_KEY", "pk_test_BKVBReTM3kPV3vTxhJXTXpku")
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "sk_test_QBBK3fUNA4GvwSTirChrLGLW")
