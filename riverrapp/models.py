@@ -27,12 +27,12 @@ class Profile(models.Model):
 
 class Gig(models.Model):
     CATEGORY_CHOICES = (
-    ("GD","Graphics & Design"),
-    ("PT","Programming  & Tech"),
-    ("DM","Digital and Marketing"),
-    ("VA","Video & Animation"),
-    ("MA","Music and Audio"),
-    ("VM","Video & Marketing")
+    ("LP","Landing Pages"),
+    ("PW","Personal Websites"),
+    ("BF","Bug Fixes"),
+    ("TT","Tutoring & tutorials"),
+    ("PS","Professional Websites"),
+    ("PA","Web Applications")
     )
 
     title = models.CharField(max_length = 500)

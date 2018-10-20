@@ -135,6 +135,7 @@ def thank_you(request):
 def checkout(request):
 
     if request.method == "POST":
+        gig = Gig.objects.get(id = id)
         token = request.POST.get("stripeToken")
         # amounts = request.POST.get("data-amount")
     try:
@@ -165,11 +166,13 @@ def my_buyings(request):
 
 def category(request,link):
     categories = {
-       "graphics-design":"GD",
-       "digital-Marketing":"DM",
-       "video-Animation":"VA",
-       "music-audio":"MA",
-       "programming-tech":"PT"
+       "Landing-Pages":"LP",
+       "Personal-Websites":"PW",
+       "Bug-Fixes":"BF",
+       "Tutoring-Tutorials":"TT",
+       "Professional-Websites":"PW",
+       "Web-Applications":"PWA"
+
     }
     try:
         gigs = Gig.objects.filter(category=categories[link])
