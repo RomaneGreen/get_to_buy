@@ -2,6 +2,11 @@ html{
     background-color: black;
 }
 
+.navlogo {
+    position: relative;
+    bottom: 14px;
+}
+
 .container {
     width:1100;
 

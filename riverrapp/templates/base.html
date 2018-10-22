@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Riverr app</title>
-    <link rel="shortcut icon" href="{% static '/img/favicond.ico' %}"/>
-    <link rel="icon" href="{% static '/img/favicond.ico' %}" type="image/x-icon" />
+    <title>Rivify</title>
+    <link rel="shortcut icon" href="{% static '/img/faviconsl.png' %}"/>
+    <link rel="icon" href="{% static '/img/faviconsl.png' %}" type="image/x-icon" />
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css"> -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static '/css/app.css' %}"  />
@@ -19,7 +19,7 @@
         <div class="navbar-inverse">
             <div class="container">
                 <div class="navbar-header">
-                    <a href="/"><div class="navbar-brand"><img src="{% static 'img/fiverr.svg' %}" alt="" height="29"></div></a>
+                    <a href="/"><div class="navbar-brand navlogo"><img src="{% static 'img/faviconsl.png' %}" alt="" height="55"></div></a>
                 </div>
                 <form class="navbar-form navbar-left" role="search" method="GET" action="/search/">
                     <div class="form-group">
@@ -36,7 +36,7 @@
                     <li class="dropdown">
 
                         <a href="#" class = "dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"</a>
-                        <img src="{% if user.profile %} {{ user.profile.avatar }} {% else %} {% static 'img/avatar.jpg' %} {% endif %}" class="img-circle" height="22" width="22">&nbsp
+                        <img src="{% if user.profile %} {% static 'img/avatar.jpg' %} {% else %} {% static 'img/avatar.jpg' %} {% endif %}" class="img-circle" height="22" width="22">&nbsp
                         {{ user.get_full_name|default:user.username }} <span class="caret"></span>
 
                     </a>
@@ -49,18 +49,15 @@
                         <li role = 'separator' class = 'divider'></li>
                         <li><a href="{% url 'profile' user.username %}">My profile</li>
                         <li role = 'separator' class = 'divider'></li>
-                        <li><a href="{% url 'logout' %}">Log out</li>
-                        <li role = 'separator' class = 'divider'></li>
+
                         <li><a href="{% url 'social:disconnect' 'facebook' %}?next={{request.path}}">Logout with facebook</a></li>
-                        <li><form method="post" action="{% url 'social:disconnect' 'facebook' %}">
-                             {% csrf_token %}
-                          <button type="submit">Disconnect from Facebook</button>
-                        </form>
-                    </li>
+
+
                         <li><a href="{% url 'social:disconnect' 'google-oauth2' %}?next={{request.path}}">Logout with Google</a </li>
+                        </li>
                     </ul>
-                    </li>
-                            Hello {{ user.get_full_name | default:user.username }}
+
+                            <!-- Hello {{ user.get_full_name | default:user.username }} -->
                             {% else %}
                                 <li><a href="{% url 'social:begin' 'google-oauth2' %}?next={{request.path}}">Login with Google</a></li>
                                 <li>    <a href="{% url 'social:begin' 'facebook' %}?next={{request.path}}">Login with Facebook</a></li>
