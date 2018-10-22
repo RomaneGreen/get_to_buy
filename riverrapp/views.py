@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from paypal.standard.ipn.signals import valid_ipn_received, invalid_ipn_received
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from .models import Gig, Profile, Purchase, Review
@@ -6,6 +7,7 @@ from .forms import GigForm
 from django.conf import settings
 import stripe
 import braintree
+from paypal.standard.forms import PayPalPaymentsForm
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 STRIPE_SECRET_KEY = 'sk_test_QBBK3fUNA4GvwSTirChrLGLW'
@@ -188,4 +190,23 @@ def search(request):
 def payment_form(request):
 
     context = { "stripe_key": settings.STRIPE_PUBLIC_KEY }
+    return render(request, "gig_detail.html", context)
+
+def paypal_pay(request):
+
+    # What you want the button to do.
+    paypal_dict = {
+        "business": "romane71193@gmail.com",
+        "amount": "100.00",
+        "item_name": "DJango tuts",
+        "invoice": "unique-invoice-id",
+        "notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
+        "return": request.build_absolute_uri(reverse('/')),
+        "cancel_return": request.build_absolute_uri(reverse('/')),
+        "custom": "premium_plan",  # Custom command to correlate to some function later (optional)
+    }
+
+    # Create the instance.
+    form = PayPalPaymentsForm(initial=paypal_dict)
+    context = {"form": form}
     return render(request, "gig_detail.html", context)

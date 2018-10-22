@@ -11,4 +11,5 @@ urlpatterns = [
     path('login/', auth_views.login,name='login'),
     path('my_gigs/',views.my_gigs,name = 'my_gigs'),
     path('create_gig/',views.create_gig,name = 'create_gig'),
+    path('paypal_pay/', views.paypal_pay, name='paypal_pay'),
 ]

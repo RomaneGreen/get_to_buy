@@ -40,9 +40,11 @@ INSTALLED_APPS = [
     'riverrapp',
     'social_django',
     'mathfilters',
+    'paypal.standard.ipn'
 
 ]
 
+PAYPAL_TEST = True
 
 SOCIAL_AUTH_DISCONNECT_PIPELINE = (
     'social.pipeline.disconnect.allowed_to_disconnect',

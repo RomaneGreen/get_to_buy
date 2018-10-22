@@ -41,5 +41,6 @@ urlpatterns = [
     url(r'^checkout$', views.checkout, name="checkout_page"),
     url(r'^$', views.payment_form, name="payment_page"),
     url(r'^thank-you$', views.thank_you, name="thank_you.html"),
+    url(r'^paypal/', include('paypal.standard.ipn.urls')),
     url(r'^admin/', admin.site.urls),
 ] +static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

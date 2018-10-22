@@ -100,7 +100,7 @@
    </div>
  </div>
 <form action="/checkout" method="POST"> {% csrf_token %}
-    <input class="form-control" name="amount" value="{{ gig.price }}">
+
  <h2>Buy for ${{ gig.price }}</h2>
 
  <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
@@ -111,5 +111,7 @@
 
  </script>
  </form>
+<a href="https://www.paypal.me/RGLLC">
+<img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/buy-logo-large.png" alt="Buy now with PayPal" /></a>
 
 {% endblock %}
