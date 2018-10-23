@@ -7,7 +7,7 @@ from .forms import GigForm
 from django.conf import settings
 import stripe
 import braintree
-from paypal.standard.forms import PayPalPaymentsForm
+
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 STRIPE_SECRET_KEY = 'sk_test_QBBK3fUNA4GvwSTirChrLGLW'
@@ -22,8 +22,7 @@ def login(request):
 def logout_view(request):
     logout(request)
 
-# def logout(request):
-#     return render(request,'home.html',{})
+
 
 def home(request):
     gigs = Gig.objects.filter(status=True)

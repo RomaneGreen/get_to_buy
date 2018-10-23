@@ -23,7 +23,7 @@
      </div>
      <div class="panel panel-default">
        <div class="panel-heading">
-         <h4>Review</h4>
+         <h4>Reviews</h4>
      </div>
          {% if show_post_review %}
          <div class="panel-body">
@@ -61,28 +61,32 @@
        <div class="panel-body">
 
          {% if user and not user.is_anonymous %}
-           <!-- <form method="POST" action="/checkout/">
-             {% csrf_token %} -->
-             <div id="payment-form"></div>
-             <a href="https://www.paypal.com/invoice/p/#SV2JZNTZAYM3MRZJ">
-             <input name="gig_id" value="{{ gig.id }}" hidden>
-            <button type="submit" class="btn btn-success btn-block">Order Now (${{ gig.price }})</button></a>
-           <!-- </form> -->
-
-           <script src="https://js.braintreegateway.com/v2/braintree.js"></script>
-           <script>
-             $(document).ready(function() {
-               braintree.setup("{{ client_token }}", "dropin", {
-                 container: "payment-form",
-                 paypal: {
-                   singleUse: true,
-                   amount: "{{ gig.price }}",
-                   currency: 'USD'
-                 }
-               });
+         <!-- <form method="POST" action="/checkout/">
+           {% csrf_token %} -->
+           <!-- <div id="payment-form"></div>
+           <a href="https://www.paypal.com/invoice/p/#SV2JZNTZAYM3MRZJ">
+           <input name="gig_id" value="{{ gig.id }}" hidden>
+          <button type="submit" class="btn btn-success btn-block">Order Now (${{ gig.price }})</button></a> -->
+         <!-- </form> -->
+       <!--
+         <script src="https://js.braintreegateway.com/v2/braintree.js"></script>
+         <script>
+           $(document).ready(function() {
+             braintree.setup("{{ client_token }}", "dropin", {
+               container: "payment-form",
+               paypal: {
+                 singleUse: true,
+                 amount: "{{ gig.price }}",
+                 currency: 'USD'
+               }
              });
+           });
 
-           </script>
+         </script> -->
+         <img src="{% if user.profile %} {% static 'img/favicons.png' %} {% else %} {% static 'img/favicons.png' %} {% endif %}" class="img-circle center-block" height="100" width="100">
+         <a href="{% url 'profile' gig.user.username %}"><h4 class="text-center">{{ gig.user.username }}</h4></a>
+         <hr/>
+         <p>{{ gig.user.profile.about }}</p>
          {% else %}
            You need to login to order this gig!
          {% endif %}
@@ -91,27 +95,27 @@
      </div>
      <div class="panel panel-default">
        <div class="panel-body">
-         <img src="{% if user.profile %} {{ user.profile.avatar }} {% else %} {% static 'img/rondoe.jpg' %} {% endif %}" class="img-circle center-block" height="100" width="100">
-         <a href="{% url 'profile' gig.user.username %}"><h4 class="text-center">{{ gig.user.username }}</h4></a>
-         <hr/>
-         <p>{{ gig.user.profile.about }}</p>
+           <form action="/checkout" method="POST"> {% csrf_token %}
+
+            <h2>Buy for ${{ gig.price }}</h2>
+
+            <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                data-key="pk_test_BKVBReTM3kPV3vTxhJXTXpku"
+                data-description="A Django Charge"
+                data-amount="{{ gig.price | mul:100 }} "
+                data-locale="auto">
+
+            </script>
+            <br>
+
+            </form>
+           <a href="https://www.paypal.me/RGLLC" target="_blank">
+           <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/buy-logo-large.png" alt="Buy now with PayPal" /></a>
+
        </div>
      </div>
    </div>
  </div>
-<form action="/checkout" method="POST"> {% csrf_token %}
 
- <h2>Buy for ${{ gig.price }}</h2>
-
- <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-     data-key="pk_test_BKVBReTM3kPV3vTxhJXTXpku"
-     data-description="A Django Charge"
-     data-amount="{{ gig.price | mul:100 }} "
-     data-locale="auto">
-
- </script>
- </form>
-<a href="https://www.paypal.me/RGLLC">
-<img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/buy-logo-large.png" alt="Buy now with PayPal" /></a>
 
 {% endblock %}
